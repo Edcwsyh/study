@@ -11,8 +11,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
-#include "Actor.hpp"
-#include "Pos.hpp"
+#include "actor/Actor.hpp"
 
 namespace Edc {
 

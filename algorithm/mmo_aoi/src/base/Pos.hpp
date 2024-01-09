@@ -8,7 +8,7 @@
 #define __POS_HPP__
 
 #include <cstdint>
-#include "Base.hpp"
+#include "ConcatNum.hpp"
 
 namespace Edc {
 

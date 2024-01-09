@@ -17,13 +17,14 @@ public:
     
 //Constant
 public:
-protected:
+private:
     
 //Member Variables
-protected:
+private:
+    uint32_t m_dwSpeed;
     
 //Static Member Variables
-protected:
+private:
     
 //Member Function
 public:
@@ -33,6 +34,8 @@ public:
     ~Animal() = default;
     Animal& operator=( const Animal& ) = default;
     Animal& operator=( Animal&& ) = default;
+
+    virtual int do_action(EnmAction enmAction) override;
 //Static Member Function
 public:
     

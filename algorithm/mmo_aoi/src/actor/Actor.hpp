@@ -9,7 +9,7 @@
 
 #include <cstdint>
 #include "Action.hpp"
-#include "Pos.hpp"
+#include "base/Pos.hpp"
 
 namespace Edc {
 
