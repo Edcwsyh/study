@@ -7,16 +7,19 @@
 #ifndef __MAP_AREA_HPP__
 #define __MAP_AREA_HPP__
 
+#include <algorithm>
 #include <cstdint>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include "actor/Actor.hpp"
+#include "actor/ActorMgr.hpp"
 
 namespace Edc {
 
 using ActorSet = std::unordered_set<ActorID>;
 using ActorSection = std::pair<ActorSet::const_iterator, ActorSet::const_iterator>;
+using MapAreaID = Pos;
 
 class MapArea {
 //Type
@@ -34,11 +37,11 @@ protected:
     // Actor of in this area
     std::unordered_set<ActorID> m_setActor;
     // (x, y) of this area
-    Pos m_oPos;
+    MapAreaID m_oAreaID;
     
 //Member Function
 public:
-    MapArea( Pos pos ) : m_oPos( pos ) {  }
+    MapArea( MapAreaID oAreaID ) : m_oAreaID( oAreaID ) {  }
     explicit MapArea( const MapArea& ) = default;
     explicit MapArea( MapArea&& ) = default;
     ~MapArea() = default;
@@ -65,14 +68,36 @@ public:
         m_setActor.insert( ullActorID );
     }
 
-    Pos::BasePosType x() const noexcept { return m_oPos.x(); }
-    void set_x( Pos::BasePosType dwAxisX ) noexcept { m_oPos.set_x( dwAxisX ); }
-    Pos::BasePosType y() const noexcept { return m_oPos.y(); }
-    void set_y( Pos::BasePosType dwAxisY ) noexcept { m_oPos.set_y( dwAxisY ); }
+    Pos::BasePosType x() const noexcept { return m_oAreaID.x(); }
+    void set_x( Pos::BasePosType dwAxisX ) noexcept { m_oAreaID.set_x( dwAxisX ); }
+    Pos::BasePosType y() const noexcept { return m_oAreaID.y(); }
+    void set_y( Pos::BasePosType dwAxisY ) noexcept { m_oAreaID.set_y( dwAxisY ); }
 
-    const Pos& pos() const noexcept { return m_oPos; }
-    template<typename TPos>
-    void set_pos(TPos&& pos) noexcept { m_oPos = std::forward<Pos>( pos ); }
+    const MapAreaID& pos() const noexcept { return m_oAreaID; }
+    template<typename TMapAreaID>
+    void set_pos(TMapAreaID&& oAreaID) noexcept { m_oAreaID = std::forward<MapAreaID>( oAreaID ); }
+
+    void notify_actor_move( const Actor& oActor ) {
+        for ( ActorID ullActorID : m_setActor ) {
+            if ( Actor* pActor = ActorMgr::instance().get_actor( ullActorID ); pActor != nullptr ) {
+                pActor->other_actor_move( oActor );
+            }
+        }
+    }
+    void notify_actor_enter_view( const Actor& oActor ) {
+        for ( ActorID ullActorID : m_setActor ) {
+            if ( Actor* pActor = ActorMgr::instance().get_actor( ullActorID ); pActor != nullptr ) {
+                pActor->other_actor_enter_view( oActor );
+            }
+        }
+    }
+    void notify_actor_leave_view( const Actor& oActor ) {
+        for ( ActorID ullActorID : m_setActor ) {
+            if ( Actor* pActor = ActorMgr::instance().get_actor( ullActorID ); pActor != nullptr ) {
+                pActor->other_actor_leave_view( oActor );
+            }
+        }
+    }
 //Static Member Function
 public:
     

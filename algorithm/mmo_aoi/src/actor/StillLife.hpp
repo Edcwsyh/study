@@ -35,7 +35,7 @@ public:
     StillLife& operator=( const StillLife& ) = default;
     StillLife& operator=( StillLife&& ) = default;
 
-    virtual int do_action( EnmAction enmAction ) override { return 0; }
+    virtual int do_action( const ActionParam& oParam) override { return 0; }
 //Static Member Function
 public:
     

@@ -8,6 +8,8 @@
 #define __ANIMAL_HPP__
 
 #include "Actor.hpp"
+#include "actor/Action.hpp"
+#include "base/Pos.hpp"
 
 namespace Edc {
 
@@ -35,7 +37,9 @@ public:
     Animal& operator=( const Animal& ) = default;
     Animal& operator=( Animal&& ) = default;
 
-    virtual int do_action(EnmAction enmAction) override;
+    virtual int do_action( const ActionParam& oParam ) override;
+
+    virtual int move( const Pos& oNextPos );
 //Static Member Function
 public:
     
